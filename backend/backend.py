@@ -24,7 +24,9 @@ if len(args) > 0:
 		module = importlib.import_module("collectors." + args[0] )
 		print green("> Collecting information from " + bold(args[0]))
 		module.run()
-	except ImportError:
+	except ImportError as e:
+		print red(bold("> Could not import collector %s" % args[0]))
+		print red("Reason: %s" % str(e))
 		showUsage()
 else:
 	showUsage()
