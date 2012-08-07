@@ -1,5 +1,5 @@
 from termstyle import *
-import common, sys
+import common, sys, re
 try:
 	import mechanize
 except ImportError:
@@ -63,7 +63,7 @@ def run():
 	baseurl = "http://search.ucas.com/cgi-bin/hsrun/search/search/search.hjx;start=search.HsSearch.run?y=%s&w=H" % common.year
 	print green("> Begin UCAS Scrapping NOW")
 	
-	for (key, name) in common.universites.items()[1:2]:
+	for (key, name) in common.universites.items():
 		print green(">> "+ name)
 		br = mechanize.Browser()
 		br.open(baseurl)
@@ -87,21 +87,42 @@ def run():
 			if course_type.type == "Unknown" or len(course_type.options) == 0:
 				print red(">>>> UNKNOWN COURSE TYPE! Raw: %s" % raw_course_type)
 			
-			print yellow(">>>> Finding Entry Requirements."),
-			br.open( course.find(**{"class":"bodyLink"})['href'] )
+			entry_data = br.open( course.find(**{"class":"bodyLink"})['href'] )
+			light_c = BeautifulSoup( entry_data )
+			campuses = light_c.find("div", text="Campuses and associated colleges").parent.find("table").find_all("tr")[4:-2]
+			campus = campuses[0].find_all("td")[2].text
+			print yellow(">>>> At campus '%s'" % campus)
 			
-			sys.stdout.write( yellow(".") )
-			sys.stdout.flush()
-			
-			br.follow_link( url_regex = "HsProfile" )
-			
-			sys.stdout.write( yellow(".") )
-			sys.stdout.flush()
-			
-			entry_data = br.follow_link( url_regex = "HsEntryReq" )
-			print yellow(" done")
+			print yellow(">>>> Finding Entry Requirements...")
+			entry_data = br.open( course.find(**{"class":"bodyLink"})['href'].replace("HsDetails", "HsEntryReq") )
 
 			entry_soup = BeautifulSoup( entry_data )
 			alevels = entry_soup.find("td", text="GCE A/AS level grade range" ).next_sibling.text
 			if alevels != "": alevels = ALevels(alevels)			
 			print yellow( ">>>> A-Levels needed: %s" %  alevels )
+			
+			csr = entry_soup.find("td", text="Course Specific Requirements" )
+			if csr != None:
+				csr = csr.next_sibling.text
+				print ">>>> %s" % csr
+
+			req = entry_soup.find("span", text=re.compile("GCSE"))
+			if req != None:
+				req = req.next_sibling.next_sibling.find("td", text="Subjects and grades required")
+			if req != None:
+				req = req.next_sibling.text
+				print ">>>> req %s" % req
+
+			excl = entry_soup.find("span", text="GCE A level")
+			if excl != None:
+				excl = excl.find("td", text="Excluded Subjects")
+				if excl != None:
+					excl = excl.next_sibling.text
+					print ">>>> excl %s" % req
+			
+			tarrif = entry_soup.find("span", text="Volume and depth of study/Tariff points and Grades")
+			if tarrif != None:
+				tarrif = tarrif.next_sibling.next_sibling.find("td", text="Tariff score")
+			if tarrif != None:
+				tarrif = tarrif.next_sibling.text
+				print ">>>> Tarrif Score: %s" % tarrif

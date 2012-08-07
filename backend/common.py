@@ -3,14 +3,18 @@ year = "2013"
 import urllib2
 from bs4 import *
 
-def fetch_page(page):
-	page = urllib2.urlopen(page)
-	return BeautifulSoup(page)
+def fetch_page(page, parser=None):
+	opener = urllib2.build_opener()
+	opener.addheaders = [('User-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11')]
+	args = []
+	if parser != None:
+		args.append(parser)
+	return BeautifulSoup(opener.open(page).read(), *args)
 
 universites = {
+	"T20" : "Teesside University",
 	"N21" : "Newcastle University",
-	"T20" : "Teeside University",
-	"I50" : "Imperial College London",
+	"I50" : "Imperial College",
 	"N77" : "Northumbria University",
 	"B32" : "The University of Birmingham"
 }
