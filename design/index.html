@@ -3,28 +3,34 @@
 	<h1 class="hfont">Welcome to Compare that Uni</h1>
 	<h3 class="hfont">To begin, please select the subject you are interested in <abbr title="Posh word for study">reading</abbr> at University</h3>
 </div>
-<div class="row search center">
-	<input class="hfont mainsearch" type="search" placeholder="Type a subject here to quickly find your subject" id="search" />
+<div class="row search">
+	<div class="six columns centered">
+		<div class="center">
+			<input class="hfont mainsearch" type="search" autocomplete="off" placeholder="Type a subject here to quickly find your subject" id="search" />
+		</div>
+		<div class="results hide">
+		</div>
+	</div>
 </div>
 </div>
 <div class="row">
-	<div class="four columns">
-		<h3>Mathmatics</h3>
-		<h4>Computing</h4>
-		<ul>
-			<li><a href="/subject/G600">Pretend Subject</a></li>
-		</ul>
+	<br/>
+	<div class="alert-box alert">
+		Please note: We only have details from Newcastle University, Teeside University, University of Birmingham and Imperial College
 	</div>
-	<div class="four columns">
-		<h4>Computing</h4>
-		<ul>
-			<li><a href="/subject/G600">Pretend Subject</a></li>
-		</ul>
-	</div>
-	<div class="four columns">
-		<h4>Computing</h4>
-		<ul>
-			<li><a href="/subject/G600">Pretend Subject</a></li>
-		</ul>
+	<div class="courses masonry">
+		{{# courses }}
+		<div class="four columns result">
+			<h4>
+				<img src="{{ asset_path }}letters/{{ letter }}.png" class="right" />
+				{{ name }}
+			</h4>
+			<dl class="vertical tabs">
+				{{# items }}
+				<dd><a href="/course/{{ code }}">{{ name }}</a></dd>
+				{{/ items}}
+			</dl>
+		</div>
+		{{/ courses }}
 	</div>
 </div>

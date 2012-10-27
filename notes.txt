@@ -1,0 +1,14 @@
+pill icon http://www.clker.com/cliparts/b/5/S/r/Z/H/medicine-pill.svg
+tooth - http://www.thenounproject.com/
+dna- tried https://commons.wikimedia.org/w/index.php?title=File:Levo_dextro.svg&page=1 modified new - http://sweetclipart.com/multisite/sweetclipart/files/dna_black.png
+earth - http://www.iconfinder.com/icondetails/43244/128/earth_globe_map_monotone_transparent_world_%D8%B2%D9%85%DB%8C%D9%86_icon
+europe - http://commons.wikimedia.org/w/index.php?title=File:Europe_subregion_map_world_factbook.svg&page=1 no looked bad
+went with eU flag https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg
+hammer mod - http://image.spreadshirt.com/image-server/v1/designs/2949736,width=190,height=190.png/judge-gavel-law-icon_design.png
+
+
+## urls
+
+/course/G600?grades=ABB&something=else
+
+? is for query string

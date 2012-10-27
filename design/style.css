@@ -14,15 +14,17 @@
 h1.hfont, h2.hfont, h3.hfont, h4.hfont, h5.hfont, h6.hfont {
   font-weight: lighter; }
 
-.header, .hcolor, .hcolor abbr {
+.header, .hcolor, .hcolor abbr, .hcolor h1, .hcolor h2, .hcolor h3, .hcolor h4 {
   color: #FFF; }
 
 .hcolor {
   background: #2BA6CB; }
 
+.row.search {
+  padding-bottom: 20px !important; }
+
 .mainsearch {
-  max-width: 400px;
-  margin-bottom: 20px !important;
+  width: 100%;
   margin-top: 15px !important; }
 
 li {
@@ -65,3 +67,44 @@ li {
 
 body {
   font-family: 'Source Sans Pro', sans-serif; }
+
+.filtering > div {
+  padding: 8px 0;
+  border-bottom: 1px solid #CCC; }
+
+.filtering h6 {
+  margin: 4px 0; }
+
+.center .columns {
+  text-align: center; }
+
+.opButton.opOn, .peopleSel.on {
+  opacity: 1; }
+
+.opButton, .peopleSel {
+  cursor: pointer;
+  opacity: 0.4; }
+
+.grey {
+  color: #AAA; }
+
+.entry {
+  border-left: 4px solid #FFF;
+  padding-left: 9px;
+  margin-bottom: 9px; }
+
+.icons img {
+  margin-right: 7px; }
+
+.results {
+  background: #FFF;
+  padding: 15px;
+  color: #000; }
+
+.results h3, .results h4 {
+  color: #333;
+  margin: 0; }
+
+img.faded {
+  vertical-align: middle;
+  opacity: 0.4; }

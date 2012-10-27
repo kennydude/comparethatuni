@@ -1,21 +1,62 @@
 <div class="hcolor">
 	<div class="row">
-		<h1 class="hfont">Compare Courses</h1>
+		<h1 class="hfont">Compare {{ course.name }} Courses</h1>
 		<h4 class="hfont hide-for-small">Use the filtering on the left to find the course just for you</h4>
 		<h4 class="hfont show-for-small">Use the filtering by swiping left to find the course just for you</h4>
 	</div>
 </div>
 <div class="row">
 	<div class="four columns p20top">
+		<h5 class="hfont">{{ group.name }} courses</h5>
+		<dl class="vertical tabs">
+			{{# group.items }}
+				<dd{{# active }} class="active"{{/ active }}>
+					<a href="/course/{{ code }}">{{ name }}</a>
+				</dd>
+			{{/ group.items }}
+		</dl>
+		<h5 class="hfont">Filtering controls</h5>
 		<div class="panel">
-			Filtering options will go here
+			<div>
+				<label>My A-Levels are <abbr title="Don't worry if you aren't doing 4, just fill in those you are doing a full A2 level in">(?)</abbr></label>
+				<div class="row">
+					{{# alevel }}
+					<div class="three columns">
+					<select name="alevel{{ number }}">
+						<option selected>-</option>
+						<option>A*</option>
+						<option>A</option>
+						<option>B</option>
+						<option>C</option>
+						<option>D</option>
+					</select>
+					</div>
+					{{/ alevel }}
+				</div>
+				<hr/>
+				<div>
+					<label>Keywords to look for <abbr title="This is things you want in the course and should be in the detailed course description and other information we have where possible">(?)</abbr></label>
+					<input type="text" name="keywords" />
+				</div>
+
+				<hr/>
+				<span class="grey">
+					Filtering is updated automagically
+				</span>
+			</div>
 		</div>
 	</div>
-	<div class="eight columns">
+	<div class="eight columns p20top">
 		<div class="hasresults">
 			<h4 class="hfont">Here's what we found for you</h4>
+			<div class="loading">
+				<hr/>
+				<img src="{{ asset_path }}info.png" class="faded" />
+				Just a moment while we update the filtering...
+				<hr/>
+			</div>
 			<div class="results">
-				<div class="result panel">
+				<div class="result panel entry" data-key="ncl-g601">
 					<div class="row">
 						<div class="three columns">
 							<img src="http://placekitten.com/200/300" title="Bachelor of Science" />
@@ -30,14 +71,16 @@
 										Entry Requirements
 									</div>
 									<div class="content">
+										<p>
 										A-levels <span class="label radius alert">A</span> <span class="label radius">B</span> <span class="label radius">B</span> 
 										<br/>
 										Excluding General Studies and Critial Thinking
+										</p>
 									</div>
 								</li>
 								<li>
 									<div class="title">
-										Course Information
+										Detailed Course Information
 									</div>
 									<div class="content">
 										This will be loaded over AJAX if needed

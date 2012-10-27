@@ -7,9 +7,9 @@
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
  	<meta charset="utf-8" />
-	<title>{{ page_title }}</title>
-	<link rel="stylesheet" href="foundation.css">
-	<link rel="stylesheet" href="style.css">
+	<title>{{ page_title }} -- Compare that Uni!</title>
+	<link rel="stylesheet" href="{{ asset_path }}foundation.css">
+	<link rel="stylesheet" href="{{ asset_path }}style.css">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Average' rel='stylesheet' type='text/css'>
 	
 	<!-- IE Fix for HTML5 Tags -->
@@ -21,7 +21,7 @@
 <div class="header">
 	<div class="row">
 		<span class="compare">Compare</span> <span class="that">that</span> <span class="uni">Uni</span>
-		<span><img src="../hat-tiny.png" /></span>
+		<span><img src="{{ asset_path }}hat-tiny.png" /></span>
 	</div>
 </div>
 <div class="content">
@@ -30,5 +30,9 @@
 <div class="footer">
 	Created by Joe Simpson
 </div>
+<SCRIPT TYPE="text/javascript" src="http://code.jquery.com/jquery.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript" src="{{ asset_path }}jquery.masonry.min.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript" src="{{ asset_path }}jquery.foundation.accordion.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript" src="{{ asset_path }}script.js"></SCRIPT>
 </body>
 </html>

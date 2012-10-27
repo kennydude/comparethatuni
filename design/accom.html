@@ -1,0 +1,112 @@
+<div class="hcolor">
+	<div class="row">
+		<h1 class="hfont">Compare {{ university }}'s Accomodation</h1>
+		<h4 class="hfont hide-for-small">Use the filtering on the left to find the accomodation just for you</h4>
+		<h4 class="hfont show-for-small">Use the filtering by swiping left to find the accomodation just for you</h4>
+	</div>
+</div>
+<div class="row">
+	<div class="four columns p20top">
+		<div class="panel filtering">
+			<h4>Filter</h4>
+			<div>
+				<label>I need a room for <span class="number-of-people">1 person</label>
+				<img src="user.png" class="peopleSel on" data-people="1 person" title="I actually need a room for 1 person" />
+				<img src="user.png" class="peopleSel" data-people="2 people" title="I actually need a room for 2 people" />
+			</div>
+			<div>
+				<h6>I need at least</h6>
+				<div class="row"><div class="three columns">
+					<img src="shower.png" title="Wash Facilities" />
+				</div><div class="nine columns">
+					<label for="bath-en-suite" title="A bath or shower to yourself">
+						<input type="radio" name="bath" value="en-suite" id="bath-en-suite" />
+						En-Suite
+					</label>
+					<label for="bath-washbasin" title="A sink">
+						<input type="radio" name="bath" value="washbasin" id="bath-washbasin" />
+						Washbasin
+					</label>
+					<label for="bath-na">
+						<input type="radio" name="bath" value="na" id="bath-na" />
+						I don't care
+					</label>
+				</div></div>
+			</div>
+			<div>
+				<h6>I would like</h6>
+				<div class="row center">
+					<div class="four columns opButton opOn">
+						<img src="wifi.png" title="I need internet" /><br/>
+						Internet
+					</div>
+					<div class="four columns opButton">
+						<img src="tv.png" title="I need TV" /><br/>
+						Communal TV
+					</div>
+					<div class="four columns opButton opOn">
+						<img src="washing.png" title="I need Laundry services" /><br/>
+						Laundry
+					</div>
+				</div>
+				<br/>
+				<div class="row center">
+					<div class="four columns opButton">
+						<img src="bike.png" title="I need cycle storage" /><br/>
+						Cycle Storage
+					</div>
+					<div class="four columns opButton">
+						<img src="beer.png" title="I need beer" /><br/>
+						Bar
+					</div>
+					<div class="four columns opButton">
+						<img src="pizza.png" title="I need somewhere catered" /><br/>
+						Catering
+					</div>
+				</div>
+			</div>
+			<br/>
+			<span class="grey">
+				Filtering is updated automagically
+			</span>
+		</div>
+	</div>
+	<div class="eight columns p20top">
+		<div class="loading alert-box">
+			Loading new results. Hang on!
+		</div>
+		<div class="result">
+			<div class="row">
+				<div class="eight columns">
+					<h1 class="hfont">Bowsden Court</h1>
+					<p class="data">
+						Bowsden Court is 2.4 miles (around 20 minutes) from the main campus. Nearby is <a href="">Asda Superstore</a>, <a href="">Sainsburys</a> and <a href="">Jesmond Metro</a>. Other notes
+					</p>
+					<div class="icons">
+						<img src="beer.png" title="There is a bar" />
+						<img src="washing.png" title="There is laundry services" />
+						<a href=""><img src="fb.png" title="Facebook Page" /></a>
+						<a href=""><img src="web.png" title="Website" /></a>
+					</div>
+				</div>
+				<div class="four columns">
+					<img src="http://maps.googleapis.com/maps/api/staticmap?markers=color:blue|54.98407,-1.65235&size=178x150&sensor=false" title="Google Map" />
+				</div>
+			</div>
+			<div class="entry" data-key="pidde">
+				<h3 class="hfont">Large room room without washbasin</h3>
+				<p class="data">
+					Available on a 43 week contract (total £4,000) at £100 per week
+				</p>
+			</div>
+			<div class="entry" data-key="xxl">
+				<h3 class="hfont">Extra Large room room with En-Suite</h3>
+				<p class="data">
+					Available on a 43 week contract (total £4,000) or 52 week contract (total £4,000) at £100 per week
+				</p>
+			</div>
+			<hr/>
+		</div>
+	</div>
+
+</div>
