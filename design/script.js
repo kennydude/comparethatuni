@@ -46,4 +46,11 @@ $(document).ready(function(){
 	});
 	$(".masonry").masonry();
 	$(document).foundationAccordion();
+	$(".compareBox").on("change", function(){
+		if($(this).attr("checked")){
+			$(this).closest(".result").addClass("active");
+		} else{
+			$(this).closest(".result").removeClass("active");
+		}
+	});
 });

@@ -1,0 +1,46 @@
+<div class="result panel entry" data-key="ncl-g601">
+	<div class="row">
+		<div class="three columns">
+			<img src="http://placekitten.com/200/300" title="Bachelor of Science" />
+		</div>
+		<div class="nine columns">
+			<h6 class="hfont">A <abbr title="Roughly means 'advanced student'">Bachelor</abbr> of Science from</h6>
+			<h5 class="hfont">The University of Newcastle in</h5>
+			<h4 class="hfont">Software Engineering lasting 4 years full time</h4>
+			<ul class="accordion">
+				<li class="active">
+					<div class="title">
+						Entry Requirements
+					</div>
+					<div class="content">
+						<p>
+						A-levels <span class="label radius alert">A</span> <span class="label radius">B</span> <span class="label radius">B</span> 
+						<br/>
+						Excluding General Studies and Critial Thinking
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="title">
+						Detailed Course Information
+					</div>
+					<div class="content">
+						This will be loaded over AJAX if needed
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="right">
+		{{> shareme }}
+	</div>
+	{{# comparing }}
+	<label for="compare-ncl" class="hfont">
+		<input type="checkbox" class="compareBox" name="compare-ncl" id="compare-ncl" />
+		I would like to compare this course
+	</label>
+	{{/ comparing }}
+	{{^ comparing }}
+		<br/><br/>
+	{{/ comparing }}
+</div>

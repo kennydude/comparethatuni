@@ -50,6 +50,12 @@ li{
 	-o-transform: rotate(#{$deg}deg);
 	transform: rotate(#{$deg}deg);
 }
+@mixin transition($details){
+	-webkit-transition: $details;
+	-moz-transition: $details;
+	-o-transition: $details;
+	-ms-transition: $details;
+}
 @mixin tbBorder($details){
 	border-top: $details;
 	border-bottom: $details;
@@ -112,4 +118,13 @@ body{
 img.faded{
 	vertical-align: middle;
 	opacity: 0.4;
+}
+.panel.active{
+	box-shadow: 0px 0px 10px yellow;
+}
+.panel{
+	@include transition(box-shadow 0.4s);
+}
+.center{
+	text-align: center;
 }

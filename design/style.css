@@ -108,3 +108,15 @@ body {
 img.faded {
   vertical-align: middle;
   opacity: 0.4; }
+
+.panel.active {
+  box-shadow: 0px 0px 10px yellow; }
+
+.panel {
+  -webkit-transition: box-shadow 0.4s;
+  -moz-transition: box-shadow 0.4s;
+  -o-transition: box-shadow 0.4s;
+  -ms-transition: box-shadow 0.4s; }
+
+.center {
+  text-align: center; }

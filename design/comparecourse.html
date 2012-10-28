@@ -11,7 +11,7 @@
 		<dl class="vertical tabs">
 			{{# group.items }}
 				<dd{{# active }} class="active"{{/ active }}>
-					<a href="/course/{{ code }}">{{ name }}</a>
+					<a href="/compare/course/{{ code }}">{{ name }}</a>
 				</dd>
 			{{/ group.items }}
 		</dl>
@@ -38,6 +38,30 @@
 					<label>Keywords to look for <abbr title="This is things you want in the course and should be in the detailed course description and other information we have where possible">(?)</abbr></label>
 					<input type="text" name="keywords" />
 				</div>
+				<hr/>
+				<div>
+					<label>I am looking for</label>
+					<label for="courseTypeAny">
+						<input type="radio" name="courseType" id="courseTypeAny" value="any" />
+						Any type of course
+					</label>
+					<label for="courseTypeBA">
+						<input type="radio" name="courseType" id="courseTypeBA" value="bachelor" />
+						A Bachelor degreee
+					</label>
+					<label for="courseTypeCHE">
+						<input type="radio" name="courseType" id="courseTypeCHE" value="certhe" />
+						A Certificiate of Higher Education
+					</label>
+					<label for="courseTypeF">
+						<input type="radio" name="courseType" id="courseTypeF" value="foundation" />
+						A Foundation Degree
+					</label>
+					<label for="courseTypeD">
+						<input type="radio" name="courseType" id="courseTypeD" value="doctorate" />
+						A Doctorate
+					</label>
+				</div>
 
 				<hr/>
 				<span class="grey">
@@ -49,51 +73,14 @@
 	<div class="eight columns p20top">
 		<div class="hasresults">
 			<h4 class="hfont">Here's what we found for you</h4>
-			<div class="loading">
+			<div class="loading hide">
 				<hr/>
 				<img src="{{ asset_path }}info.png" class="faded" />
 				Just a moment while we update the filtering...
 				<hr/>
 			</div>
 			<div class="results">
-				<div class="result panel entry" data-key="ncl-g601">
-					<div class="row">
-						<div class="three columns">
-							<img src="http://placekitten.com/200/300" title="Bachelor of Science" />
-						</div>
-						<div class="nine columns">
-							<h6 class="hfont">A <abbr title="Roughly means 'advanced student'">Bachelor</abbr> of Science from</h6>
-							<h5 class="hfont">The University of Newcastle in</h5>
-							<h4 class="hfont">Software Engineering lasting 4 years full time</h4>
-							<ul class="accordion">
-								<li class="active">
-									<div class="title">
-										Entry Requirements
-									</div>
-									<div class="content">
-										<p>
-										A-levels <span class="label radius alert">A</span> <span class="label radius">B</span> <span class="label radius">B</span> 
-										<br/>
-										Excluding General Studies and Critial Thinking
-										</p>
-									</div>
-								</li>
-								<li>
-									<div class="title">
-										Detailed Course Information
-									</div>
-									<div class="content">
-										This will be loaded over AJAX if needed
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<label for="compare-ncl" class="hfont">
-						<input type="checkbox" name="compare-ncl" id="compare-ncl" />
-						I would like to compare this course
-					</label>
-				</div>
+				{{> coursedetail }}
 				this one is not up to date:
 				<div class="result panel callout">
 					<div class="row">
