@@ -7,8 +7,17 @@ went with eU flag https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Eu
 hammer mod - http://image.spreadshirt.com/image-server/v1/designs/2949736,width=190,height=190.png/judge-gavel-law-icon_design.png
 
 
+## circle
+
+http://science.kqed.org/quest/files/2011/06/641px-mad_scientist_transparent_backgroundsvg2.png science
+http://www.wecreatenyc.com/wp-content/uploads/2011/08/key-15-engineering.jpg engineering
+http://i.telegraph.co.uk/multimedia/archive/01209/dentist_1209024c.jpg dentist
+http://hgtv.sndimg.com/HGTV/2008/07/06/painting_your_countertops_bathrk_1_lead.jpg arts
+http://blog.diversitynursing.com/Portals/100318/images/nurse%205.jpg nursing
+
 ## urls
 
 /course/G600?grades=ABB&something=else
 
 ? is for query string
+

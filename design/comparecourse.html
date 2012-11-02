@@ -1,3 +1,4 @@
+{{^ pjax }}
 <div class="hcolor">
 	<div class="row">
 		<h1 class="hfont">Compare {{ course.name }} Courses</h1>
@@ -16,23 +17,25 @@
 			{{/ group.items }}
 		</dl>
 		<h5 class="hfont">Filtering controls</h5>
-		<div class="panel">
+		<div class="panel"><form class="filtering">
 			<div>
 				<label>My A-Levels are <abbr title="Don't worry if you aren't doing 4, just fill in those you are doing a full A2 level in">(?)</abbr></label>
 				<div class="row">
 					{{# alevel }}
 					<div class="three columns">
-					<select name="alevel{{ number }}">
+					<select class="alevelSelector" name="alevel{{ number }}">
 						<option selected>-</option>
-						<option>A*</option>
-						<option>A</option>
-						<option>B</option>
-						<option>C</option>
-						<option>D</option>
+						<option value="A*">A*</option>
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="C">C</option>
+						<option value="D">D</option>
 					</select>
 					</div>
 					{{/ alevel }}
 				</div>
+				<hr/>
+				<label>I also have <input name="extra_points" id="extra_points" type="text" class="three inline" value="{{ query.extra_points_value }}" /> extra UCAS Points</label>
 				<hr/>
 				<div>
 					<label>Keywords to look for <abbr title="This is things you want in the course and should be in the detailed course description and other information we have where possible">(?)</abbr></label>
@@ -42,67 +45,62 @@
 				<div>
 					<label>I am looking for</label>
 					<label for="courseTypeAny">
-						<input type="radio" name="courseType" id="courseTypeAny" value="any" />
+						<input type="radio" name="courseType" id="courseTypeAny" value="any" {{# query.courseType.any }}checked{{/ query.courseType.any }} />
 						Any type of course
 					</label>
 					<label for="courseTypeBA">
-						<input type="radio" name="courseType" id="courseTypeBA" value="bachelor" />
+						<input type="radio" name="courseType" id="courseTypeBA" value="bachelor" {{# query.courseType.bachelor }}checked{{/ query.courseType.bachelor }} />
 						A Bachelor degreee
 					</label>
 					<label for="courseTypeCHE">
-						<input type="radio" name="courseType" id="courseTypeCHE" value="certhe" />
+						<input type="radio" name="courseType" id="courseTypeCHE" value="certificate" {{# query.courseType.certificate }}checked{{/ query.courseType.certificate }} />
 						A Certificiate of Higher Education
 					</label>
 					<label for="courseTypeF">
-						<input type="radio" name="courseType" id="courseTypeF" value="foundation" />
+						<input type="radio" name="courseType" id="courseTypeF" value="foundation" {{# query.courseType.foundation }}checked{{/ query.courseType.foundation }} />
 						A Foundation Degree
 					</label>
-					<label for="courseTypeD">
-						<input type="radio" name="courseType" id="courseTypeD" value="doctorate" />
-						A Doctorate
+					<label for="courseTypeM">
+						<input type="radio" name="courseType" id="courseTypeD" value="masters" {{# query.courseType.masters }}checked{{/ query.courseType.masters }} />
+						A Masters
 					</label>
 				</div>
 
 				<hr/>
 				<span class="grey">
 					Filtering is updated automagically
+					<span class="loading gone">
+						and it is right now!
+					</span>
+					<span class="goingToLoad gone">
+						and it will shortly
+					</span>
 				</span>
 			</div>
-		</div>
+		</form></div>
 	</div>
 	<div class="eight columns p20top">
-		<div class="hasresults">
-			<h4 class="hfont">Here's what we found for you</h4>
-			<div class="loading hide">
+		<div class="content">
+			<h4 class="hfont" id="resultsHeader">Here's what we found for you</h4>
+			<div class="loading gone" id="contentLoading">
 				<hr/>
 				<img src="{{ asset_path }}info.png" class="faded" />
 				Just a moment while we update the filtering...
 				<hr/>
 			</div>
-			<div class="results">
-				{{> coursedetail }}
-				this one is not up to date:
-				<div class="result panel callout">
-					<div class="row">
-						<div class="three columns">
-							<img src="http://placekitten.com/200/300" title="Bachelor of Science" />
-						</div>
-						<div class="nine columns">
-							<h6 class="hfont">A Bachelor of Science from</h6>
-							<h4 class="hfont">The University of Newcastle</h4>
-						</div>
-					</div>
-					<label for="compare-ncl2" class="hfont">
-						<input type="checkbox" checked name="compare-ncl2" id="compare-ncl2" />
-						I would like to compare this course
-					</label>
-				</div>
+			<div class="results" id="results">
+{{/ pjax }}
+				{{# courses }}
+					{{> coursedetail }}
+				{{/ courses }}
+				{{^ courses }}
+					<h4 class="hfont">Oops! We have nothing for you</h4>
+				{{/ courses }}
+{{^ pjax }}
 			</div>
 			<a href="#" class="button large">Compare selected courses</a>
-		</div>
-		<div class="noresults">
-
 		</div>
 	</div>
 	<div class="pad20top">&nbsp;</div>
 </div>
+{{/ pjax }}

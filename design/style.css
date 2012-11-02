@@ -68,10 +68,6 @@ li {
 body {
   font-family: 'Source Sans Pro', sans-serif; }
 
-.filtering > div {
-  padding: 8px 0;
-  border-bottom: 1px solid #CCC; }
-
 .filtering h6 {
   margin: 4px 0; }
 
@@ -120,3 +116,10 @@ img.faded {
 
 .center {
   text-align: center; }
+
+input.inline {
+  margin: 0;
+  display: inline; }
+
+.gone {
+  display: none; }

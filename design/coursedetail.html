@@ -1,23 +1,40 @@
-<div class="result panel entry" data-key="ncl-g601">
+<div class="result panel entry" data-key="{{ code }}-{{ institution }}">
 	<div class="row">
 		<div class="three columns">
-			<img src="http://placekitten.com/200/300" title="Bachelor of Science" />
+			<img src="/assets/top/{{ type.bottom }}.png" class="underNext" />
+			<img src="/assets/top/{{ type.top }}.png" title="Course Type Graphic" />
 		</div>
 		<div class="nine columns">
-			<h6 class="hfont">A <abbr title="Roughly means 'advanced student'">Bachelor</abbr> of Science from</h6>
-			<h5 class="hfont">The University of Newcastle in</h5>
-			<h4 class="hfont">Software Engineering lasting 4 years full time</h4>
+			<h6 class="hfont">A {{& type.name }} from</h6>
+			<h5 class="hfont">{{ university.name }} in</h5>
+			<h4 class="hfont">{{ name }} lasting {{# type.options }}
+				{{ years }} years {{ way }}
+				{{^ last }} or {{/ last }}
+			{{/ type.options }}</h4>
 			<ul class="accordion">
 				<li class="active">
 					<div class="title">
 						Entry Requirements
 					</div>
 					<div class="content">
+						{{# entry.tarrif }}
 						<p>
-						A-levels <span class="label radius alert">A</span> <span class="label radius">B</span> <span class="label radius">B</span> 
-						<br/>
-						Excluding General Studies and Critial Thinking
+							<span class="label radius">{{ entry.tarrif }}</span> UCAS Points
 						</p>
+						{{/ entry.tarrif }}
+						{{# entry.alevels_accepted }}
+						<p>
+							A-levels
+							{{# entry.alevels }}
+								{{# levels }}<span class="label radius {{ class }}">{{ name }}</span> {{/ levels }} {{^ last }} or {{/ last }}
+							{{/ entry.alevels }}
+						</p>
+						{{/ entry.alevels_accepted }}
+						{{# entry.specific }}
+						<p>
+							{{ entry.specific }}
+						</p>
+						{{/ entry.specific }}
 					</div>
 				</li>
 				<li>
@@ -35,8 +52,8 @@
 		{{> shareme }}
 	</div>
 	{{# comparing }}
-	<label for="compare-ncl" class="hfont">
-		<input type="checkbox" class="compareBox" name="compare-ncl" id="compare-ncl" />
+	<label for="compare-{{ code }}-{{ institution }}" class="hfont">
+		<input type="checkbox" class="compareBox" name="compare-{{ code }}-{{ institution }}" id="compare-{{ code }}-{{ institution }}" />
 		I would like to compare this course
 	</label>
 	{{/ comparing }}

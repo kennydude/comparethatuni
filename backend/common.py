@@ -19,6 +19,10 @@ universites = {
 	"B32" : "The University of Birmingham"
 }
 
+def connectDB():
+	from pymongo import Connection
+	return Connection()['comparethatuni']
+
 def split_str(i):
 	r = []
 	import string

@@ -6,7 +6,7 @@
   "dependencies": {
     "express": "3.x",
     "mustache" : ">=0.7.0",
-    "mongoose" : ">=3.3.1",
+    "mongoskin" : ">=0.4.4",
     "clone" : ">=0.1.1"
   }
 }
