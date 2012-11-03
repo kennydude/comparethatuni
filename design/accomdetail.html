@@ -1,0 +1,69 @@
+<div class="row">
+	<div class="eight columns">
+			<h1 class="hfont">{{ name }}</h1>
+			<p class="data">
+				Nearby shops include
+					{{# nearby.shop }}
+						<a href="{{ url }}" target="_blank" title="Link to Google Places page">
+							<img src="{{ icon }}" class="tIcon" />
+							{{ name }}
+						</a>
+						{{^ second_last}}{{^ last }}, {{/ last }}{{/ second_last }}
+						{{# second_last }} and {{/ second_last }}
+					{{/ nearby.shop }}.<br/>
+				For drinking there is 
+					{{# nearby.drink }}
+						<a href="{{ url }}" target="_blank" title="Link to Google Places page">
+							<img src="{{ icon }}" class="tIcon" />
+							{{ name }}
+						</a>
+						{{^ second_last}}{{^ last }}, {{/ last }}{{/ second_last }}
+						{{# second_last }} and {{/ second_last }}
+					{{/ nearby.drink }}.<br/>
+				Plus, for leisure activities there is {{# nearby.leisure }}
+						<a href="{{ url }}" target="_blank" title="Link to Google Places page">
+							<img src="{{ icon }}" class="tIcon" />
+							{{ name }}
+						</a>
+						{{^ second_last}}{{^ last }}, {{/ last }}{{/ second_last }}
+						{{# second_last }} and {{/ second_last }}
+					{{/ nearby.leisure }}.
+			</p>
+			<div class="icons">
+				{{# items.0.flags.bar }}
+					<img src="{{ asset_path }}beer.png" title="There is a bar" />
+				{{/ items.0.flags.bar }}
+				{{# items.0.flags.laundry }}
+					<img src="{{ asset_path }}washing.png" title="There are laundry services" />
+				{{/ items.0.flags.laundry }}
+				{{# facebook }}
+				<a href="{{ facebook }}"><img src="{{ asset_path }}fb.png" title="Facebook Page" /></a>
+				{{/ facebook }}
+				{{# website }}
+				<a href="{{ website }]"><img src="{{ asset_path }}web.png" title="Website" /></a>
+				{{/ website }}
+			</div>
+		</div>
+		<div class="four columns">
+			<a href="http://maps.google.com/maps?q={{ location.0 }},{{ location.1 }}" target="_blank">
+				<img src="http://maps.googleapis.com/maps/api/staticmap?markers=color:blue|{{ location.0 }},{{ location.1 }}&size=178x150&sensor=false" title="Google Map" />
+			</a>
+			<div class="right">
+				{{> shareme }}
+			</div>
+		</div>
+	</div>
+	{{# items }}
+	<div class="entry" data-key="{{ description }}">
+		<h3 class="hfont">{{ description }}</h3>
+		<p class="data">
+			For {{ for }} {{# more_than_1_person }}people{{/ more_than_1_person }}{{^ more_than_1_person }}person{{/ more_than_1_person }} with {{ bathroom }}.
+			Available on a {{# contract }}
+				{{ length }} week contract (total £{{ total }}) at £{{ cost_per_week }} per week
+				{{^ last }} or {{/last}}
+			{{/ contract }}
+		</p>
+	</div>
+	{{/ items }}
+	<hr/>
+</div>

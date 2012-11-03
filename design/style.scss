@@ -8,14 +8,18 @@
 .p20top{
 	padding-top: 20px;
 }
+ul.accordion{ margin-top: 7px; }
 .panel.callout label{
 	color: #fff;
 }
 h1.hfont, h2.hfont, h3.hfont, h4.hfont, h5.hfont, h6.hfont{
 	font-weight: lighter;
 }
-.header, .hcolor, .hcolor abbr, .hcolor h1, .hcolor h2, .hcolor h3, .hcolor h4{
+.header, .header a, .hcolor, .hcolor abbr, .hcolor h1, .hcolor h2, .hcolor h3, .hcolor h4{
 	color: #FFF;
+}
+.header a:hover{
+	color: #CCC;
 }
 .hcolor{
 	background: #2BA6CB;
@@ -130,4 +134,8 @@ input.inline{
 }
 .gone{
 	display: none;
+}
+.tIcon{
+	width: 10px;
+	height: auto;
 }

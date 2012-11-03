@@ -4,6 +4,17 @@ var clone = require('clone');
 
 var appURL = "http://comparethatuni.com/"; // false
 
+String.prototype.replaceAll = function(pcFrom, pcTo){
+	var i = this.indexOf(pcFrom);
+	var c = this;
+ 
+	while (i > -1){
+		c = c.replace(pcFrom, pcTo); 
+		i = c.indexOf(pcFrom);
+	}
+	return c;
+}
+
 // HOGAN {
 var fs = require("fs"),
 	fastDevelop = true,
@@ -16,6 +27,12 @@ fs.readFile(__dirname + "/design/shareme.html", function (err, data) {
 });
 fs.readFile(__dirname + "/design/coursedetail.html", function (err, data) {
 	mustache.compilePartial("coursedetail", data.toString());
+});
+fs.readFile(__dirname + "/design/accomdetail.html", function (err, data) {
+	mustache.compilePartial("accomdetail", data.toString());
+});
+fs.readFile(__dirname + "/design/compareheader.html", function (err, data) {
+	mustache.compilePartial("compareheader", data.toString());
 });
 
 app.engine("html", function(path, options, fn){
@@ -143,6 +160,33 @@ var aLevelTarrif = {
 	"E" : 40
 };
 
+function sortAccom(data){
+	data['url'] = appURL + "/accom/" + data['name'].replaceAll(" ", "+") + "@" + data['institution'];
+
+	data['Titems'] = data['items'];
+	data['items'] = [];
+	data['Titems'].forEach(function(item){
+		contract = item['contract'];
+		item['contract'] = [];
+		contract.forEach(function(c){
+			item['contract'].push({
+				"length" : c,
+				"total" : Math.ceil(item['cost_per_week'] * c)
+			});
+		});
+		item['contract'][item['contract'].length-1]['last'] = true;
+		data['items'].push(item);
+	});
+
+	for(key in data['nearby']){
+		n = data['nearby'][key];
+		n[n.length-1]['last'] = true;
+		n[n.length-2]['second_last'] = true;
+	}
+
+	return data;
+}
+
 function sortCourse(data){
 	data['type']['top'] = data['type']['name'].split(" ")[0];
 	data['type']['bottom'] = data['type']['name'].split(" ");
@@ -176,8 +220,7 @@ function sortCourse(data){
 			data['entry']['alevels'][ data['entry']['alevels'].length - 1 ]['last'] = true;
 	}
 	data['url'] = appURL + "course/" + data['code'] + "@" + data['institution'];
-
-	console.log(data);
+	
 	return data;
 }
 
@@ -194,6 +237,48 @@ app.get("/course/:course", function(req, res){
 			});
 		});
 	});
+});
+
+app.get("/accom/:accom", function(req, res){
+	cparts = req.params.accom.split("@");
+	db.collection("accom").findOne({"name" : cparts[0].replaceAll("+", " "), "institution" : cparts[1]}, function(err, data){
+		if(data == undefined){ sendError(res); return; }
+		db.collection("accom_items").find({"name" : cparts[0].replaceAll("+", " "), "institution" : cparts[1]}).toArray(function(err, items){
+			data['items'] = items;
+			res.render("indiv-accom.html", sortAccom(data), function(err, data){
+				res.end(data);
+			});
+		});
+	});
+});
+
+// Used in /compare/accom and /compare/universities
+function parseCompareArgs(req, res){
+	if(req.params.courses){
+		courses = req.params.split(",");
+		req.extra_data = { "courses" : courses };
+		unis = [];
+		courses.forEach(function (item) {
+			t = item.split("@");
+			unis.push(t[1]);
+		});
+		return unis;
+	} else if(req.params.universities){
+		return req.params.universities.split(",");
+	} else{
+		sendError(res);
+		return;
+	}
+}
+
+// This will look like /compare/accom?universities=N21,N33 or /compare/accom?courses=G601@N21,G600@N21
+app.get("/compare/accom/", function(req, res){
+
+});
+
+// This will look like /compare/universities?courses=G601@N21,G600@N21
+app.get("/compare/universities", function(req, res){
+
 });
 
 app.get("/compare/course/:course", function(req, res) {
@@ -233,7 +318,7 @@ app.get("/compare/course/:course", function(req, res) {
 	if( req.query['courseType'] != "any"){
 		filters['type.name'] = { "$regex" : "^" + regexEscape(req.query['courseType']), "$options" : "i" };
 	}
-	if(req.query['alevels'] != undefined){
+	if(req.query['alevels'] != undefined && req.query['alevels'] != ""){
 		tarrif = 0;
 		score = [];
 
@@ -249,7 +334,6 @@ app.get("/compare/course/:course", function(req, res) {
 		if(req.query['extra_points'] != undefined){
 			tarrif += req.query['extra_points'] * 1;
 		}
-		console.log(tarrif);
 
 		score.sort();
 		score = score.join("")*1;
@@ -261,8 +345,12 @@ app.get("/compare/course/:course", function(req, res) {
 	}
 
 	db.collection("courses").find(filters, { "limit": 20, "skip" : 10 * ( req.query['page']-1 ) }).toArray(function(err, fdata){
-			data = [];
-			fdata.forEach(function(item) { data.push( sortCourse(item) ); });
+			unisNeeded = [];
+			fdata.forEach(function(item) {
+				if(unisNeeded.indexOf(item['institution']) == -1){
+					unisNeeded.push(item['institution']);
+				}
+			});
 
 			query = {};
 			for(key in req.query){
@@ -270,22 +358,32 @@ app.get("/compare/course/:course", function(req, res) {
 				query[key][req.query[key]] = true;
 				query[key + "_value"] = req.query[key];
 			}
+			
+			db.collection("university").find({ "code" : { "$in" : unisNeeded } }, { "name":1, "code":1 }).toArray(function(err, uniData){
+				uniD = {};
+				uniData.forEach(function(item){ uniD[ item.code ] = item.name });
+				
+				data = [];
+				fdata.forEach(function(item) {
+					item['university'] = { "name" : uniD[item['institution']] };
+					data.push( sortCourse(item) );
+				});
 
-			console.log(query);
+				res.render("comparecourse.html", {
+					"page_title" : "Compare " + ourCourse.name + " Courses",
+					"group" : group,
+					"course" : ourCourse,
+					"comparing" : true,
+					"courses" : data,
+					"alevel" : alevels,
+					"pjax" : req.get("X-PJAX"),
+					"query" : query
+				}, function(err, data) {
+					res.end(data);
+				});
 
-			res.render("comparecourse.html", {
-				"page_title" : "Compare " + ourCourse.name + " Courses",
-				"group" : group,
-				"course" : ourCourse,
-				"comparing" : true,
-				"courses" : data,
-				"alevel" : alevels,
-				"pjax" : req.get("X-PJAX"),
-				"query" : query
-			}, function(err, data) {
-				res.end(data);
 			});
-
+			
 	});
 });
 

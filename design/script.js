@@ -50,7 +50,9 @@ function doCompareMatrix(){
 
 	q = '';
 	for(key in parts){
-		q += key + "=" + parts[key] + "&";
+		if(parts[key] != undefined && parts[key] != ''){
+			q += key + "=" + parts[key] + "&";
+		}
 	}
 	q = q.substr(0, q.length-1);
 	djaxNavigate( "?" + q );

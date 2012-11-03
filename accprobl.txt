@@ -1,0 +1,16 @@
+Accomodation
+
+## Queried Data
+
+- Institution
+- Internet/Cycle/Laundry
+- People
+- Washroom
+
+## Extra data
+
+- Location
+- Nearby
+- Etc
+
+Queried data will be "accom_items" with a link to "accom"

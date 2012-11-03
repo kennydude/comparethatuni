@@ -14,6 +14,8 @@ http://www.wecreatenyc.com/wp-content/uploads/2011/08/key-15-engineering.jpg eng
 http://i.telegraph.co.uk/multimedia/archive/01209/dentist_1209024c.jpg dentist
 http://hgtv.sndimg.com/HGTV/2008/07/06/painting_your_countertops_bathrk_1_lead.jpg arts
 http://blog.diversitynursing.com/Portals/100318/images/nurse%205.jpg nursing
+http://www.clare.cam.ac.uk/data/uploads/admissions/undergraduate/subjects/Mathematics.jpg maths
+http://www.electronicsandyou.com/PCB/pcb.jpg computing
 
 ## urls
 

@@ -1,0 +1,14 @@
+{{# courses_exist }}
+<div class="row">
+	<div class="panel">
+		<h4 class="hfont">Summary so far</h4>
+		You have picked
+		<ul>
+			{{# courses }}
+			<li><a href="/course/{{ code }}@{{ institution }}">{{ name }} at {{ inst_name }}</a></li>
+			{{/ courses }}
+		</ul>
+		<a class="button tiny" href="?universities={{# courses }}{{ institution }}{{^ last }},{{/ last }}{{/ courses }}">Remove this</a>
+	</div>
+</div>
+{{/ courses_exist }}
