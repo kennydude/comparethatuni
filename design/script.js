@@ -33,10 +33,13 @@ function research () {
 	}
 }
 
+var partTemplate = {};
+
 function doCompareMatrix(){
 	$(".goingToLoad").hide();
-	parts = {};
+	parts = partTemplate;
 
+	// course
 	parts['courseType'] = $("input[name=courseType]:checked").val();
 	if($("#extra_points").val() != ""){
 		parts['extra_points'] = $("#extra_points").val();
@@ -45,6 +48,17 @@ function doCompareMatrix(){
 	$(".alevelSelector").each(function(){
 		if($(this).val() != "-"){
 			parts['alevels'] += $(this).val();
+		}
+	});
+
+	// acc
+	parts['bathroom'] = $("input[name='bath']:checked").val();
+	if($("peopleSel2").hasClass("on")){
+		parts['for'] = '2-people';
+	}
+	$(".opButton").each(function(){
+		if($(this).hasClass("opOn")){
+			parts[$(this).data("key")] = "needed";
 		}
 	});
 
@@ -60,11 +74,19 @@ function doCompareMatrix(){
 
 function prepareContent(){
 	$(document).foundationAccordion();
+	$(".compareBox:checked").each(function(){
+		$(this).closest(".result").addClass("active");
+	});
 	$(".compareBox").on("change", function(){
 		if($(this).attr("checked")){
 			$(this).closest(".result").addClass("active");
 		} else{
 			$(this).closest(".result").removeClass("active");
+		}
+		if($(".compareBox:checked").length > 0){
+			$(".floater").fadeIn(300);
+		} else{
+			$(".floater").fadeOut(300);
 		}
 	});
 	$(".underNext").each(function () {
@@ -76,9 +98,42 @@ function prepareContent(){
 	$(".entry").each(function(){
 		$(this).css("border-left", "4px solid " + colorhash($(this).data("key")));
 	});
+	$(".nextStage").click(function(){
+		p = '';
+
+		if($(this).data("form") != undefined){
+			$(".compareBox:checked").each(function(){
+				p += $(this).attr("value") + ",";
+			});
+			$(".nextForm", $(this).data("form")).val(p+"");
+			$($(this).data("form")).submit();
+			return false;
+		}
+
+		if($(this).data("pre") != undefined){ p = $(this).data("pre"); }
+		page = $(this).data("next") + "?" + p + $(this).data("key") + "=";
+		$(".compareBox:checked").each(function(){
+			page += $(this).attr("value") + ",";
+		});
+		page = page.substr(0, page.length-1);
+		document.location.href=page;
+		return false;
+	});
 }
 
+var compareTimeout = undefined;
+function compareMatrixEvent(){
+	if(compareTimeout != undefined){
+		clearTimeout(compareTimeout);
+	}
+	$(".goingToLoad, #contentLoading").show();
+	compareTimeout = setTimeout(doCompareMatrix, 4000);
+};
+
 $(document).ready(function(){
+	$(".partTemplate").each(function(){
+		partTemplate[ $(this).data("key") ] = $(this).data("value");
+	});
 	$("#results").on("pjax:send", function(){
 		$(".loading").show();
 		console.log("go");
@@ -86,23 +141,18 @@ $(document).ready(function(){
 		$(".loading").hide();
 		console.log("emnd");
 	});
-	var compareTimeout = undefined;
-	$(".filtering input, .filtering select").on("change", function () {
-		if(compareTimeout != undefined){
-			clearTimeout(compareTimeout);
-		}
-		$(".goingToLoad, #contentLoading").show();
-		compareTimeout = setTimeout(doCompareMatrix, 4000);
-	});
+	$(".filtering input, .filtering select").on("change", compareMatrixEvent);
 
 	$("#search").on("change", research).on("keyup", research).on("click", research);
 	$(".opButton").click(function(){
 		$(this).toggleClass("opOn");
+		compareMatrixEvent();
 	});
 	$(".peopleSel").click(function(){
 		$(".number-of-people").text($(this).data("people"));
 		$(".peopleSel").removeClass("on");
 		$(this).addClass("on").prevAll(".peopleSel").addClass("on");
+		compareMatrixEvent();
 	});
 	
 	$(".masonry").masonry();

@@ -6,7 +6,7 @@
 		</div>
 		<div class="nine columns">
 			<h6 class="hfont">A {{& type.name }} from</h6>
-			<h5 class="hfont"><a href="/uni/{{ institution }}" target="_blank">{{ university.name }}</a> in</h5>
+			<h5 class="hfont"><a class="nP" href="/uni/{{ institution }}" target="_blank">{{ university.name }}</a> in</h5>
 			<h4 class="hfont">{{ name }} lasting {{# type.options }}
 				{{ years }} years {{ way }}
 				{{^ last }} or {{/ last }}
@@ -70,7 +70,7 @@
 	</div>
 	{{# comparing }}
 	<label for="compare-{{ code }}-{{ institution }}" class="hfont">
-		<input type="checkbox" class="compareBox" name="compare-{{ code }}-{{ institution }}" id="compare-{{ code }}-{{ institution }}" />
+		<input type="checkbox" class="compareBox" name="compare-{{ code }}-{{ institution }}" id="compare-{{ code }}-{{ institution }}" value="{{ code }}@{{ institution }}" />
 		I would like to compare this course
 	</label>
 	{{/ comparing }}

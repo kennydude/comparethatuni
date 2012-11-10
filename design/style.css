@@ -137,3 +137,20 @@ input.inline {
 .detailsContent {
   overflow-y: auto !important;
   max-height: 400px; }
+
+.floater {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+.floater .columns {
+  padding: 10px;
+  background: #fff; }
+
+@media print {
+  .shareme {
+    display: none; }
+
+  a.nP[href]:after {
+    content: '' !important; } }

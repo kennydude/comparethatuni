@@ -1,83 +1,121 @@
+{{^ pjax }}
 <div class="hcolor">
 	<div class="row">
-		<h1 class="hfont">Compare {{ university }}'s Accomodation</h1>
+		<h1 class="hfont">Compare Accomodation</h1>
 		<h4 class="hfont hide-for-small">Use the filtering on the left to find the accomodation just for you</h4>
 		<h4 class="hfont show-for-small">Use the filtering by swiping left to find the accomodation just for you</h4>
 	</div>
 </div>
 <div class="row">
+	<div class="partTemplate" data-key="{{ djax_key }}" data-value="{{ djax_value }}"></div>
 	<div class="four columns p20top">
+		{{> compareheader }}
+		<h5 class="hfont">Filtering controls</h5>
 		<div class="panel filtering">
-			<h4>Filter</h4>
 			<div>
 				<label>I need a room for <span class="number-of-people">1 person</label>
-				<img src="user.png" class="peopleSel on" data-people="1 person" title="I actually need a room for 1 person" />
-				<img src="user.png" class="peopleSel" data-people="2 people" title="I actually need a room for 2 people" />
+				<img src="{{ asset_path }}user.png" class="peopleSel on" data-people="1 person" title="I actually need a room for 1 person" />
+				<img src="{{ asset_path }}user.png" class="peopleSel {{# query.for.2-people }}on{{/ query.for.2-people }}" id="peopleSel2" data-people="2 people" title="I actually need a room for 2 people" />
 			</div>
+			<hr/>
 			<div>
 				<h6>I need at least</h6>
 				<div class="row"><div class="three columns">
-					<img src="shower.png" title="Wash Facilities" />
+					<img src="{{ asset_path }}shower.png" title="Wash Facilities" />
 				</div><div class="nine columns">
 					<label for="bath-en-suite" title="A bath or shower to yourself">
-						<input type="radio" name="bath" value="en-suite" id="bath-en-suite" />
+						<input type="radio" name="bath" value="en-suite" id="bath-en-suite" {{# query.bathroom.en-suite }}checked{{/ query.bathroom.en-suite }} />
 						En-Suite
 					</label>
 					<label for="bath-washbasin" title="A sink">
-						<input type="radio" name="bath" value="washbasin" id="bath-washbasin" />
+						<input type="radio" name="bath" value="washbasin" id="bath-washbasin" {{# query.bathroom.washbasin }}checked{{/ query.bathroom.washbasin }} />
 						Washbasin
 					</label>
 					<label for="bath-na">
-						<input type="radio" name="bath" value="na" id="bath-na" />
+						<input type="radio" name="bath" value="dont-care" id="bath-na" {{# query.bathroom.dont-care }}checked{{/ query.bathroom.dont-care }} />
 						I don't care
 					</label>
 				</div></div>
 			</div>
+			<hr/>
 			<div>
 				<h6>I would like</h6>
 				<div class="row center">
-					<div class="four columns opButton opOn">
-						<img src="wifi.png" title="I need internet" /><br/>
+					<div class="four columns opButton{{# query.internet }} opOn{{/query.internet }}" data-key="internet">
+						<img src="{{ asset_path }}wifi.png" title="I need internet" /><br/>
 						Internet
 					</div>
-					<div class="four columns opButton">
-						<img src="tv.png" title="I need TV" /><br/>
+					<div class="four columns opButton{{# query.tv }} opOn{{/query.tv }}" data-key="tv">
+						<img src="{{ asset_path }}tv.png" title="I need TV" /><br/>
 						Communal TV
 					</div>
-					<div class="four columns opButton opOn">
-						<img src="washing.png" title="I need Laundry services" /><br/>
+					<div class="four columns opButton{{# query.laundry }} opOn{{/query.laundry }}" data-key="laundry">
+						<img src="{{ asset_path }}washing.png" title="I need Laundry services" /><br/>
 						Laundry
 					</div>
 				</div>
 				<br/>
 				<div class="row center">
-					<div class="four columns opButton">
-						<img src="bike.png" title="I need cycle storage" /><br/>
+					<div class="four columns opButton{{# query.bike_store }} opOn{{/query.bike_store }}" data-key="bike_store">
+						<img src="{{ asset_path }}bike.png" title="I need cycle storage" /><br/>
 						Cycle Storage
 					</div>
-					<div class="four columns opButton">
-						<img src="beer.png" title="I need beer" /><br/>
+					<div class="four columns opButton{{# query.bar }} opOn{{/query.bar }}" data-key="bar">
+						<img src="{{ asset_path }}beer.png" title="I need beer" /><br/>
 						Bar
 					</div>
-					<div class="four columns opButton">
-						<img src="pizza.png" title="I need somewhere catered" /><br/>
+					<div class="four columns opButton{{# query.catered }} opOn{{/query.catered }}" data-key="catered">
+						<img src="{{ asset_path }}pizza.png" title="I need somewhere catered" /><br/>
 						Catering
 					</div>
 				</div>
 			</div>
+			<hr/>
 			<br/>
 			<span class="grey">
 				Filtering is updated automagically
+				<span class="loading gone">
+					and it is right now!
+				</span>
+				<span class="goingToLoad gone">
+					and it will shortly
+				</span>
 			</span>
 		</div>
 	</div>
-	<div class="eight columns p20top">
-		<div class="loading alert-box">
-			Loading new results. Hang on!
+	<div class="eight columns p20top" id="resultsHeader">
+		<div class="loading gone" id="contentLoading">
+			<hr/>
+			<img src="{{ asset_path }}info.png" class="faded" />
+			Just a moment while we update the filtering...
+			<hr/>
 		</div>
 		<div class="results" id="results">
-			
+{{/ pjax }}
+			{{# accoms }}
+				<div class="result">
+					{{> accomdetail }}
+				</div>
+			{{/ accoms }}
+			{{^ accoms }}
+				<h4 class="hfont">We have nothing :(</h4>
+			{{/ accoms }}
+{{^ pjax }}
 		</div>
 	</div>
 
 </div>
+{{# comparing }}
+<div class="floater">
+	<div class="row">
+		<div class="eight columns offset-by-four">
+			<a href="#" class="button nextStage" data-form="#summaryForm">Get a summary</a>
+		</div>
+	</div>
+</div>
+<form id="summaryForm" method="post" action="/compare/finish">
+	<input type="hidden" name="courses" value="{{ djax_value }}" />
+	<input type="hidden" name="items" class="nextForm" />
+</form>
+{{/ comparing }}
+{{/ pjax }}

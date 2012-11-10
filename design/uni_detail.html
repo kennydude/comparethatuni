@@ -1,6 +1,6 @@
 <div class="result panel entry" data-key="{{ code }}">
 	<h3 class="hfont">{{ name }}</h3>
-	<h6 class="hfont"><a href="{{ url }}">Visit The Website</a></h6>
+	<h6 class="hfont"><a href="{{ url }}" class="nP">Visit The Website</a></h6>
 	<ul class="accordion">
 		<li class="active">
 			<div class="title">
@@ -69,5 +69,13 @@
 	<div class="right">
 		{{> shareme }}
 	</div>
-	<br/><br/>
+	{{# comparing }}
+	<label for="compare-{{ code }}" class="hfont">
+		<input type="checkbox" class="compareBox" name="compare-{{ code }}" id="compare-{{ code }}" value="{{ compare_code }}" checked />
+		I would like to compare this university's accomodation
+	</label>
+	{{/ comparing }}
+	{{^ comparing }}
+		<br/><br/>
+	{{/ comparing }}
 </div>

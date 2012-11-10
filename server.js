@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var clone = require('clone');
 
-var appURL = "http://comparethatuni.com/"; // false
+var appURL = "http://comparethatuni.com"; // false
 
 String.prototype.replaceAll = function(pcFrom, pcTo){
 	var i = this.indexOf(pcFrom);
@@ -99,6 +99,7 @@ app.configure(function(){
 	app.set("view engine", "html");
 
 	app.use(express.methodOverride());
+	app.use(express.bodyParser());
 	app.use(function(err, req, res, next){
 		try{
 			next();
@@ -163,6 +164,12 @@ var aLevelTarrif = {
 	"E" : 40
 };
 
+var bathroomData = {
+	"E" : "En-Suite",
+	"N" : "shared bathroom",
+	"W" : "washbasin and shared bathroom"
+};
+
 function sortAccom(data){
 	data['share_url'] = appURL + "/accom/" + data['name'].replaceAll(" ", "+") + "@" + data['institution'];
 
@@ -177,6 +184,7 @@ function sortAccom(data){
 				"total" : Math.ceil(item['cost_per_week'] * c)
 			});
 		});
+		item['bathroom'] = bathroomData[item['bathroom']];
 		item['contract'][item['contract'].length-1]['last'] = true;
 		data['items'].push(item);
 	});
@@ -187,6 +195,11 @@ function sortAccom(data){
 		n[n.length-2]['second_last'] = true;
 	}
 
+	return data;
+}
+
+function sortUni(data){
+	data['share_url'] = appURL + "/uni/" + data['code'];
 	return data;
 }
 
@@ -244,7 +257,7 @@ app.get("/course/:course", function(req, res){
 
 app.get("/uni/:uni", function(req, res){
 	db.collection("university").findOne({"code": req.params.uni}, function(err, data){
-		res.render("uni.html", data, function(err, data){
+		res.render("uni.html", sortUni(data), function(err, data){
 			res.end(data);
 		});
 	});
@@ -265,31 +278,155 @@ app.get("/accom/:accom", function(req, res){
 
 // Used in /compare/accom and /compare/universities
 function parseCompareArgs(req, res){
-	if(req.params.courses){
-		courses = req.params.split(",");
-		req.extra_data = { "courses" : courses };
+	if(req.query.courses){
+		courses = req.query.courses.split(",");
 		unis = [];
+		c = [];
+		cbu = {};
 		courses.forEach(function (item) {
 			t = item.split("@");
-			unis.push(t[1]);
+			if(unis.indexOf(t[1]) == -1){
+				unis.push(t[1]);
+			} if(c.indexOf(t[0]) == -1){
+				c.push(t[0]);
+			}
+			if(cbu[t[1]] == undefined){ cbu[t[1]] = []; }
+			cbu[t[1]].push(item);
 		});
+		req.extra_data = { "courses" : c, "unis" : unis, "cbu" : cbu };
+		req.query['select'] = req.query.courses;
+		req.query['used'] = "courses";
 		return unis;
-	} else if(req.params.universities){
-		return req.params.universities.split(",");
+	} else if(req.query.universities){
+		req.query['select'] = req.query.universities;
+		req.query['used'] = "universities";
+		return req.query.universities.split(",");
 	} else{
 		sendError(res);
 		return;
 	}
 }
 
-// This will look like /compare/accom?universities=N21,N33 or /compare/accom?courses=G601@N21,G600@N21
-app.get("/compare/accom/", function(req, res){
+function finishCompare(file, data, req, res){
+	if(req['extra_data'] != undefined){
+		data['courses_exist'] = true;
+		db.collection("courses").find({
+			"institution" : { "$in" : req.extra_data.unis },
+			"code" : { "$in" : req.extra_data.courses }
+		}).toArray(function (errr, cdata) {
+			db.collection("university").find({ "code" : { "$in" : req.extra_data.unis } }, { "name":1, "code":1 }).toArray(function(err, uniData){
+				uniD = {};
+				uniData.forEach(function(item){ uniD[ item.code ] = item.name });
+				
+				rcdata = [];
+				cdata.forEach(function(item) {
+					item['university'] = { "name" : uniD[item['institution']] };
+					rcdata.push( sortCourse(item) );
+				});
 
+				data['courses'] = rcdata;
+				res.render(file, data, function(err, data){
+					res.end(data);
+				});
+
+			});
+			
+		});
+		return;
+	}
+	res.render(file, data, function(err, data){
+		res.end(data);
+	});
+}
+
+var bathroomLookup = {
+	"en-suite" : "E",
+	"washbasin" : { "$in" : [ "E", "W" ] }
+};
+var accFlags = [
+	"tv",
+	"catered",
+	"bar",
+	"internet",
+	"bike_store",
+	"laundry"
+];
+
+// This will look like /compare/accom?universities=N21,N33 or /compare/accom?courses=G601@N21,G600@N21
+app.get("/compare/accom", function(req, res){
+	unis = parseCompareArgs(req, res);
+	filters = {"institution" : { "$in" : unis } };
+
+	// Filters!
+	if(req.query['for'] == "2-people"){
+		filters['for'] = '2';
+	}
+	if(req.query['bathroom'] != "dont-care" && req.query['bathroom'] != undefined){
+		filters['bathroom'] = bathroomLookup[req.query['bathroom']];
+	}
+	accFlags.forEach(function(item){
+		if(req.query[item] != undefined){
+			filters["flags." + item] = true;
+		}
+	});
+
+	db.collection("accom_items").find(filters).toArray(function(err, data){
+		if(data == undefined){ sendError(res); return; }
+
+		acc = {};
+		names = [];
+		data.forEach(function(item){
+			names.push(item['name']);
+			if(acc[ item['name'] + "@" + item['institution'] ] == undefined){
+				acc[ item['name'] + "@" + item['institution'] ] = [];
+			}
+			acc[ item['name'] + "@" + item['institution'] ].push(item);
+		});
+
+		db.collection("accom").find({"name" : { "$in" : names }, "institution" : { "$in" : unis } }).toArray(function(err, items){
+			data = [];
+			items.forEach(function(item){
+				item['items'] = acc[ item['name'] + "@" + item['institution'] ];
+				data.push( sortAccom( item ) );
+			});
+
+			query = {};
+			for(key in req.query){
+				query[key] = {};
+				query[key][req.query[key]] = true;
+				query[key + "_value"] = req.query[key];
+			}
+
+			finishCompare("accom.html", {
+				"query" : query,
+				"accoms" : data,
+				"page_title" : "Compare Accomodation",
+				"pjax" : req.get("X-PJAX"),
+				"djax_key" : req.query.used,
+				"djax_value" : req.query.select,
+				"comparing" : req.query['courses'] != undefined
+			}, req, res);
+		});
+	});
 });
 
 // This will look like /compare/universities?courses=G601@N21,G600@N21
 app.get("/compare/universities", function(req, res){
+	unis = parseCompareArgs(req, res);
+	db.collection("university").find({"code": { "$in" : unis } }).toArray(function(err, data){
+		udata = [];
+		data.forEach(function(item){
+			if(req['extra_data'] != undefined){
+				item['compare_code'] = req.extra_data.cbu[item['code']].join(",");
+			} else{
+				item['compare_code'] = item['code'];
+			}
+			udata.push( sortUni(item) );
+		});
+		// compare_code
 
+		finishCompare("compareunis.html", {"key" : req.query.used, "unis" : udata, "page_title" :"Compare universities", "comparing" : true }, req, res);
+	});
 });
 
 app.get("/compare/course/:course", function(req, res) {
@@ -396,6 +533,78 @@ app.get("/compare/course/:course", function(req, res) {
 			});
 			
 	});
+});
+
+app.post("/compare/finish", function(req, res){
+	if(req.body['items'] == undefined){ sendError(res); return; }
+	items = [];
+	itemd = req.body['items'].split(",");
+	itemd.forEach(function(id){
+		if(id != ''){
+			items.push(mongo.ObjectID.createFromHexString(id));
+		}
+	});
+
+	codes = req.body['courses'].split(",");
+	unis = [];
+	courses = [];
+	codes.forEach(function(item){
+		t = item.split("@");
+		courses.push(t[0]);
+		unis.push(t[1])
+	});
+	
+	db.collection("university").find({"code" : {"$in" : unis}}).toArray(function(err, uni_d){
+		data = {};
+		uni_d.forEach(function(item){
+			item['acc'] = [];
+			item['courses'] = [];
+			data[item['code']] = sortUni( item );
+		});
+
+		// Courses
+		db.collection("courses").find({"institution": { "$in": unis }, "code" : { "$in": courses} }).toArray(function(err, courses){
+			courses.forEach(function(item){
+				item['university'] = { "name" : data[ item['institution'] ]['name'] };
+				data[ item['institution'] ]['courses'].push( sortCourse( item ) );
+			});
+			// Accomodation
+			db.collection("accom_items").find({ "_id" : { "$in" : items } }).toArray(function(err, ac_items){
+				acc = {};
+				names = [];
+				ac_items.forEach(function(item){
+					names.push(item['name']);
+					if(acc[ item['name'] + "@" + item['institution'] ] == undefined){
+						acc[ item['name'] + "@" + item['institution'] ] = [];
+					}
+					acc[ item['name'] + "@" + item['institution'] ].push(item);
+				});
+
+				db.collection("accom").find({"name" : { "$in" : names }, "institution" : { "$in" : unis } }).toArray(function(err, items){
+					items.forEach(function(item){
+						item['items'] = acc[ item['name'] + "@" + item['institution'] ];
+						data[item['institution']]['acc'].push( sortAccom( item ) );
+					});
+
+					finaldata = [];
+					for(key in data){
+						finaldata.push(data[key]);
+					}
+
+					// All of the data is here, now render it!
+					res.render("finish.html", {
+						"page_title" : "Comparison Results",
+						"data" : finaldata
+					}, function(err, data) {
+						res.end(data);
+					});
+
+				});
+			});
+		});
+	});
+
+	
 });
 
 app.get( /^\/assets\/(.*)/ , function (req, res) {

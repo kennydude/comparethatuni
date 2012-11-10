@@ -1,0 +1,28 @@
+<div class="hcolor">
+	<div class="row">
+		<h3 class="hfont">Comparison Results</h3>
+		<h4 class="hfont">Here is a summary of your comparrison</h4>
+	</div>
+</div>
+<div class="row">
+	<br/>
+	{{# data }}
+		<div class="row">
+			<div class="six columns">
+				{{> uni_detail }}
+				<h5 class="hfont">Your Course Choices</h5>
+				{{# courses }}
+					{{> coursedetail }}
+				{{/ courses }}
+			</div>
+			<div class="six columns">
+				<h5 class="hfont">Your Accomodation Choices</h5>
+				{{# acc }}
+					{{> accomdetail }}
+				{{/ acc }}
+			</div>
+		</div>
+
+	<hr />
+	{{/ data }}
+</div>

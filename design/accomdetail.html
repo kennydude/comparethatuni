@@ -1,10 +1,11 @@
-<div class="row">
-	<div class="eight columns">
+<div class="result">
+	<div class="row">
+		<div class="eight columns">
 			<h1 class="hfont">{{ name }}</h1>
 			<p class="data">
 				Nearby shops include
 					{{# nearby.shop }}
-						<a href="{{ url }}" target="_blank" title="Link to Google Places page">
+						<a class="nP" href="{{ url }}" target="_blank" title="Link to Google Places page">
 							<img src="{{ icon }}" class="tIcon" />
 							{{ name }}
 						</a>
@@ -13,7 +14,7 @@
 					{{/ nearby.shop }}.<br/>
 				For drinking there is 
 					{{# nearby.drink }}
-						<a href="{{ url }}" target="_blank" title="Link to Google Places page">
+						<a class="nP" href="{{ url }}" target="_blank" title="Link to Google Places page">
 							<img src="{{ icon }}" class="tIcon" />
 							{{ name }}
 						</a>
@@ -21,7 +22,7 @@
 						{{# second_last }} and {{/ second_last }}
 					{{/ nearby.drink }}.<br/>
 				Plus, for leisure activities there is {{# nearby.leisure }}
-						<a href="{{ url }}" target="_blank" title="Link to Google Places page">
+						<a class="nP" href="{{ url }}" target="_blank" title="Link to Google Places page">
 							<img src="{{ icon }}" class="tIcon" />
 							{{ name }}
 						</a>
@@ -40,12 +41,12 @@
 				<a href="{{ facebook }}"><img src="{{ asset_path }}fb.png" title="Facebook Page" /></a>
 				{{/ facebook }}
 				{{# website }}
-				<a href="{{ website }]"><img src="{{ asset_path }}web.png" title="Website" /></a>
+				<a href="{{ website }}"><img src="{{ asset_path }}web.png" title="Website" /></a>
 				{{/ website }}
 			</div>
 		</div>
 		<div class="four columns">
-			<a href="http://maps.google.com/maps?q={{ location.0 }},{{ location.1 }}" target="_blank">
+			<a class="nP" href="http://maps.google.com/maps?q={{ location.0 }},{{ location.1 }}" target="_blank">
 				<img src="http://maps.googleapis.com/maps/api/staticmap?markers=color:blue|{{ location.0 }},{{ location.1 }}&size=178x150&sensor=false" title="Google Map" />
 			</a>
 			<div class="right">
@@ -53,6 +54,7 @@
 			</div>
 		</div>
 	</div>
+	<br/>
 	{{# items }}
 	<div class="entry" data-key="{{ description }}">
 		<h3 class="hfont">{{ description }}</h3>
@@ -61,8 +63,18 @@
 			Available on a {{# contract }}
 				{{ length }} week contract (total £{{ total }}) at £{{ cost_per_week }} per week
 				{{^ last }} or {{/last}}
+				{{# last}}.{{/ last }}
 			{{/ contract }}
+			{{# flags.catered }}
+			Also, this option is catered
+			{{/ flags.catered }}
 		</p>
+		{{# comparing }}
+		<label for="compare-{{ description }}-{{ institution }}-{{ name }}" class="hfont">
+			<input type="checkbox" class="compareBox" name="compare-{{ description }}-{{ institution }}-{{ name }}" id="compare-{{ description }}-{{ institution }}-{{ name }}" value="{{ _id }}" checked />
+			I would like to keep this one
+		</label>
+		{{/ comparing }}
 	</div>
 	{{/ items }}
 	<hr/>
