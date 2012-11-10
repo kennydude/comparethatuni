@@ -3,11 +3,12 @@ year = "2013"
 import urllib2, json
 from bs4 import *
 
-def get_json(page):
+def get_json(page, headers = []):
 	opener = urllib2.build_opener()
-	opener.addheaders = [
+	headers.extend([
 		('User-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11')
-	]
+	])
+	opener.addheaders = headers
 	return json.load(opener.open(page))
 
 def fetch_page(page, parser=None):
@@ -24,6 +25,14 @@ universites = {
 	"I50" : "Imperial College",
 	"N77" : "Northumbria University",
 	"B32" : "The University of Birmingham"
+}
+
+ukprn = {
+	"T20" : 10007161,
+	"N21" : 10007799,
+	"I50" : 10003270,
+	"N77" : 10001282,
+	"B32" : 10006840
 }
 
 def connectDB():

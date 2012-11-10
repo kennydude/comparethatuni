@@ -38,12 +38,29 @@
 					</div>
 				</li>
 				<li>
+					<!-- this would be something else; but hey -->
+					{{# url }}
+					<div class="title">
+						More Information
+					</div>
+					<div class="content">
+						{{# url }}
+							<div>
+								You could visit the <a href="{{& url }}">website</a> for more information.
+							</div>
+						{{/ url }}
+					</div>
+					{{/ url }}
+				</li>
+				<li>
+					{{# details }}
 					<div class="title">
 						Detailed Course Information
 					</div>
-					<div class="content">
-						This will be loaded over AJAX if needed
+					<div class="content detailsContent">
+						{{& details }}
 					</div>
+					{{/ details }}
 				</li>
 			</ul>
 		</div>

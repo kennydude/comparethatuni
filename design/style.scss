@@ -139,3 +139,7 @@ input.inline{
 	width: 10px;
 	height: auto;
 }
+.detailsContent{
+	overflow-y: auto !important;
+	max-height: 400px;
+}

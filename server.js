@@ -161,7 +161,7 @@ var aLevelTarrif = {
 };
 
 function sortAccom(data){
-	data['url'] = appURL + "/accom/" + data['name'].replaceAll(" ", "+") + "@" + data['institution'];
+	data['share_url'] = appURL + "/accom/" + data['name'].replaceAll(" ", "+") + "@" + data['institution'];
 
 	data['Titems'] = data['items'];
 	data['items'] = [];
@@ -219,7 +219,7 @@ function sortCourse(data){
 		if(data['entry']['alevels'][0] != undefined)
 			data['entry']['alevels'][ data['entry']['alevels'].length - 1 ]['last'] = true;
 	}
-	data['url'] = appURL + "course/" + data['code'] + "@" + data['institution'];
+	data['share_url'] = appURL + "course/" + data['code'] + "@" + data['institution'];
 	
 	return data;
 }
