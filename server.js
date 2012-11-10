@@ -34,6 +34,9 @@ fs.readFile(__dirname + "/design/accomdetail.html", function (err, data) {
 fs.readFile(__dirname + "/design/compareheader.html", function (err, data) {
 	mustache.compilePartial("compareheader", data.toString());
 });
+fs.readFile(__dirname + "/design/uni_detail.html", function (err, data) {
+	mustache.compilePartial("uni_detail", data.toString());
+});
 
 app.engine("html", function(path, options, fn){
 	options['asset_path'] = "/assets/";
@@ -235,6 +238,14 @@ app.get("/course/:course", function(req, res){
 			res.render("course.html", sortCourse(data), function(err, data){
 				res.end(data);
 			});
+		});
+	});
+});
+
+app.get("/uni/:uni", function(req, res){
+	db.collection("university").findOne({"code": req.params.uni}, function(err, data){
+		res.render("uni.html", data, function(err, data){
+			res.end(data);
 		});
 	});
 });

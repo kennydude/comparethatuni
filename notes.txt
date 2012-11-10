@@ -6,6 +6,15 @@ europe - http://commons.wikimedia.org/w/index.php?title=File:Europe_subregion_ma
 went with eU flag https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg
 hammer mod - http://image.spreadshirt.com/image-server/v1/designs/2949736,width=190,height=190.png/judge-gavel-law-icon_design.png
 
+hard hat - http://thenounproject.com/noun/hard-hat/#icon-No2733
+history - http://thenounproject.com/noun/history/#icon-No3443
+building - http://thenounproject.com/noun/building/#icon-No921
+http://thenounproject.com/noun/art-gallery/#icon-No2416 - art
+http://thenounproject.com/noun/briefcase/#icon-No6048 - buisiness
+http://thenounproject.com/noun/book/#icon-No1009 - lingu
+http://thenounproject.com/noun/people/#icon-No2300 - social
+http://thenounproject.com/noun/nucleus/#icon-No3004 - tech
+http://thenounproject.com/noun/translation/#icon-No5735 - china etc
 
 ## circle
 

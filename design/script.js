@@ -24,7 +24,7 @@ function research () {
 	}
 	$(".results").html("").removeClass("hide");
 	$(".result").each(function(){
-		if($(this).text().toLowerCase().indexOf(term.trim()) != -1){
+		if($(this).text().toLowerCase().indexOf(term.toLowerCase().trim()) != -1){
 			$(this).clone().removeClass("result columns masonry-brick four").attr("style", "").appendTo(".results");
 		}
 	});

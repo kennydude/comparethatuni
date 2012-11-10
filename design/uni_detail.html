@@ -1,0 +1,73 @@
+<div class="result panel entry" data-key="{{ code }}">
+	<h3 class="hfont">{{ name }}</h3>
+	<h6 class="hfont"><a href="{{ url }}">Visit The Website</a></h6>
+	<ul class="accordion">
+		<li class="active">
+			<div class="title">
+				Description
+			</div>
+			<div class="content detailsContent">
+				{{& description }}
+				<p>From Wikipedia</p>
+			</div>
+		</li>
+		<li>
+			<div class="title">
+				Rating
+			</div>
+			<div class="content">
+				<div class="row">
+					<div class="four mobile-one columns">
+						The Guardian
+					</div>
+					<div class="eight mobile-three columns">
+						<span class="label">#{{ ranking.guardian}}</span>
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="four mobile-one columns">
+						<span class="show-for-small">
+							CIG
+						</span>
+						<span class="hide-for-small">
+							The Complete University Guide
+						</span>
+					</div>
+					<div class="eight mobile-three columns">
+						<span class="label">#{{ ranking.cig.place}}</span> with <span class="label">{{ ranking.cig.finish }}%</span> finishing their courses
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="four mobile-one columns">
+						The Times
+					</div>
+					<div class="eight mobile-three columns">
+						<span class="label">#{{ ranking.times.rank}}</span> with <span class="label">{{ ranking.times.satisfaction }}%</span> satisfied with their course, <span class="label">{{ ranking.times.job_percent }}%</span> getting a job. Also <span class="label">{{ ranking.times.dropout}}%</span> dropped out
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="four mobile-one columns">
+						What Uni?
+					</div>
+					<div class="eight mobile-three columns">
+						<span class="label">{{ ranking.whatuni.overall }}/10</span> Overall.
+						<br/>
+						More specifically, <span class="label">{{ ranking.whatuni.city_life }}/10</span> for the city life, <span class="label">{{ ranking.whatuni.course_and_lecturers }}/10</span> for the course and lecturers, following with <span class="label">{{ ranking.whatuni.facilities }}/10</span> for the University's facilities. Also, the societies scored <span class="label">{{ ranking.whatuni.societies }}/10</span> with finally the Student Union scoring <span class="label">{{ ranking.whatuni.union }}/10</span>
+						<div class="grey">
+							Students independently give these scores on the website <a href="http://whatuni.com">whatuni.com</a>
+						</div>
+					</div>
+				</div>
+				<hr/>
+				<span class="grey">Please note: These ratings are for the University as a whole.</span>
+			</div>
+		</li>
+	</ul>
+	<div class="right">
+		{{> shareme }}
+	</div>
+	<br/><br/>
+</div>
